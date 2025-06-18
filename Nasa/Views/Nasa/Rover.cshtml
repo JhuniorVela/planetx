@@ -1,0 +1,714 @@
+﻿@model List<NasaPhoto>;
+@{
+    ViewData["Title"] = "Rover";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .rover-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .rover-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: rgba(26, 26, 46, 0.5);
+        border-radius: 15px;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: fade-in-up 0.8s ease-out;
+    }
+
+    .rover-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #64ffda 0%, #00bcd4 50%, #2196f3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+        font-family: 'Audiowide', sans-serif;
+    }
+
+    .rover-header p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .search-section {
+        background: rgba(26, 26, 46, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 40px;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: fade-in-up 0.8s ease-out 0.2s forwards;
+        opacity: 0;
+    }
+
+    .search-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        align-items: end;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-size: 1.1rem;
+        color: #64ffda;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-group input,
+    .form-group select {
+        background: rgba(10, 10, 20, 0.8);
+        border: 1px solid rgba(100, 255, 218, 0.3);
+        border-radius: 8px;
+        padding: 12px 15px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #64ffda;
+        box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+    }
+
+    .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6' viewBox='0 0 12 6'%3E%3Cpath fill='%2364ffda' d='M6 6L0 0h12L6 6z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 12px;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 12px 25px;
+        color: #0a192f;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+    }
+
+    .rover-info {
+        background: rgba(26, 26, 46, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 25px;
+        margin: 30px 0;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.6;
+        animation: fade-in-up 0.8s ease-out 0.3s forwards;
+        opacity: 0;
+    }
+
+    .rover-info h4 {
+        color: #64ffda;
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rover-info h4 i {
+        color: #ffd700;
+    }
+
+    .rover-info p {
+        margin-bottom: 10px;
+    }
+
+    .status-active {
+        color: #64ffda;
+        font-weight: 600;
+    }
+
+    .status-inactive {
+        color: #ff6b6b;
+        font-weight: 600;
+    }
+
+    .photos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+    }
+
+    .photo-card {
+        background: rgba(26, 26, 46, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        animation: fade-in-up 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .photo-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(100, 255, 218, 0.2);
+    }
+
+    .photo-media {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .photo-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .photo-card:hover .photo-media img {
+        transform: scale(1.1);
+    }
+
+    .photo-details {
+        padding: 20px;
+    }
+
+    .photo-details div {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .photo-details strong {
+        color: #64ffda;
+        min-width: 90px;
+        display: inline-block;
+    }
+
+    .rover-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .status-active-bg {
+        background: rgba(100, 255, 218, 0.15);
+    }
+
+    .status-inactive-bg {
+        background: rgba(255, 107, 107, 0.15);
+    }
+
+    .no-results {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 50px;
+        color: rgba(255, 255, 255, 0.6);
+        animation: fade-in-up 0.6s ease-out;
+    }
+
+    .no-results i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: rgba(100, 255, 218, 0.5);
+    }
+
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(10, 10, 20, 0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .lightbox.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .lightbox-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        text-align: center;
+    }
+
+    .lightbox-content img {
+        max-width: 100%;
+        max-height: 80vh;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(100, 255, 218, 0.2);
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: -45px;
+        right: -10px;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: rgba(0, 0, 0, 0.5);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox-close:hover {
+        color: #64ffda;
+        transform: scale(1.1);
+    }
+
+    /*.error-message {
+        background: rgba(255, 87, 87, 0.2);
+        border: 1px solid rgba(255, 87, 87, 0.3);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 30px 0;
+        text-align: center;
+        color: #ffd7d7;
+        animation: fade-in-up 0.8s ease-out;
+    }*/
+
+    /* Estilos para mensajes de error */
+    .error-card {
+        background: rgba(255, 87, 87, 0.15);
+        border: 1px solid rgba(255, 87, 87, 0.3);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 30px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        animation: fade-in-up 0.8s ease-out;
+    }
+
+    .error-icon {
+        font-size: 2rem;
+        color: #ff6b6b;
+        min-width: 50px;
+        text-align: center;
+    }
+
+    .error-content {
+        flex: 1;
+    }
+
+    .error-content h3 {
+        color: #ffd7d7;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+    }
+
+    .error-content p {
+        color: rgba(255, 215, 215, 0.8);
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    .error-resolution {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .error-resolution i {
+        color: #64ffda;
+    }
+
+    .error-resolution span {
+        color: rgba(255, 215, 215, 0.9);
+    }
+
+    /* Animación de parpadeo para llamar la atención */
+    @@keyframes pulse-alert {
+        0% {
+            opacity: 0.6;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0.6;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .search-form
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .rover-header h1 {
+            font-size: 2rem;
+        }
+
+        .photos-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .rover-header h1
+        {
+            font-size: 1.8rem;
+        }
+
+        .photos-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .error-card {
+        animation: pulse-alert 2s ease-in-out infinite;
+    }
+
+    /* Estilos para la paginación */
+    .pagination-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(26, 26, 46, 0.7);
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+    }
+
+        .pagination-info i {
+            color: #64ffda;
+            font-size: 1.3rem;
+        }
+
+    .pagination-container {
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(26, 26, 46, 0.7);
+        border-radius: 10px;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .page-item {
+        display: flex;
+    }
+
+    .page-link {
+        padding: 8px 16px;
+        background: rgba(10, 10, 20, 0.8);
+        border: 1px solid rgba(100, 255, 218, 0.3);
+        border-radius: 8px;
+        color: #64ffda;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .page-link:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
+        }
+
+    .page-item.active .page-link {
+        background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+        color: #0a192f;
+        font-weight: bold;
+        border-color: #64ffda;
+    }
+
+    /* Responsive para paginación */
+    
+
+    
+</style>
+
+<div class="rover-container">
+    <div class="rover-header">
+        <h1><i class="fas fa-robot"></i> Mars Rover Photos</h1>
+        <p>Explore imágenes de la superficie marciana capturadas por los rovers de la NASA: Curiosity, Opportunity y Spirit. Cada foto es una ventana única al planeta rojo.</p>
+    </div>
+
+    <div class="search-section">
+        <form method="get" action="Rover" class="search-form">
+            <div class="form-group">
+                <label for="rover"><i class="fas fa-robot"></i> Select Rover:</label>
+                <select name="rover" id="rover" required>
+                    <option value="" disabled selected>Selecciona el Rover</option>
+                    <option value="curiosity">Curiosity</option>
+                    <option value="opportunity">Opportunity</option>
+                    <option value="spirit">Spirit</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date"><i class="fas fa-calendar-day"></i> Select Date:</label>
+                <input type="date" name="date" id="date" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-search"></i> Buscar Imágenes
+            </button>
+        </form>
+    </div>
+
+    <div class="rover-info" id="rover-info">
+        <div class="info-content">
+            <h4><i class="fas fa-info-circle"></i> Información del Rover</h4>
+            <p>Selecciona un rover para ver sus detalles y fechas disponibles</p>
+        </div>
+    </div>
+
+    @if (ViewData["ErrorMessage"] != null)
+    {
+        <div class="error-card">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="error-content">
+                <h3>@ViewData["ErrorMessage"]</h3>
+                <p>@ViewData["ErrorDetails"]</p>
+
+                @if (ViewData["ErrorResolution"] != null)
+                {
+                    <div class="error-resolution">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>@ViewData["ErrorResolution"]</span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <!-- Información de paginación -->
+        <div class="pagination-info">
+            <i class="fas fa-images"></i>
+            <span>Mostrando @((((int)ViewData["CurrentPage"] - 1) * 10) + 1) - @Math.Min((int)ViewData["CurrentPage"] * 10, (int)ViewData["TotalImages"]) de @ViewData["TotalImages"] imágenes</span>
+        </div>
+
+        <div class="photos-grid">
+            @foreach (var image in Model)
+            {
+                <div class="photo-card" style="animation-delay: calc(0.1s * @Model.IndexOf(image));">
+                    <div class="photo-media" data-src="@image.ImgSrc">
+                        <img src="@image.ImgSrc" alt="Mars photo taken by @image.Rover.Name">
+                    </div>
+                    <div class="photo-details">
+                        <div><strong>ID:</strong> @image.Id</div>
+                        <div><strong>Fecha:</strong> @image.earth_date</div>
+                        <div><strong>Sol:</strong> @image.Sol</div>
+                        <div><strong>Cámara:</strong> @image.Camera.Name</div>
+                        <div><strong>Rover:</strong> @image.Rover.Name</div>
+                        <div>
+                            <strong>Estado:</strong>
+                            <span class="rover-status @(image.Rover.Status == "active" ? "status-active status-active-bg" : "status-inactive status-inactive-bg")">
+                                @image.Rover.Status.ToUpper()
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination">
+                    @if ((int)ViewData["CurrentPage"] > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="@Url.Action("Rover", "Nasa", new { date = ViewData["Date"], rover = ViewData["Rover"], pageNumber = (int)ViewData["CurrentPage"] - 1 })">
+                                <i class="fas fa-chevron-left"></i> Anterior
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+                    {
+                        <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("Rover", "Nasa", new { date = ViewData["Date"], rover = ViewData["Rover"], pageNumber = i })">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    @if ((int)ViewData["CurrentPage"] < (int)ViewData["TotalPages"])
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="@Url.Action("Rover", "Nasa", new { date = ViewData["Date"], rover = ViewData["Rover"], pageNumber = (int)ViewData["CurrentPage"] + 1 })">
+                                Siguiente <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+    else if (Model != null)
+    {
+        <div class="no-results">
+            <i class="fas fa-search"></i>
+            <h3>No se encontraron imágenes</h3>
+            <p>Intenta con otra fecha o selecciona un rover diferente</p>
+        </div>
+    }
+</div>
+
+<div class="lightbox">
+    <div class="lightbox-content">
+        <img src="" alt="Full size Mars photo">
+        <div class="lightbox-close"><i class="fas fa-times"></i></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Lightbox functionality
+            $('.photo-media').on('click', function() {
+                const imgSrc = $(this).data('src');
+                $('.lightbox img').attr('src', imgSrc);
+                $('.lightbox').addClass('active');
+                $('body').css('overflow', 'hidden');
+            });
+
+            $('.lightbox-close').on('click', function() {
+                $('.lightbox').removeClass('active');
+                $('body').css('overflow', 'auto');
+            });
+
+            $(document).on('click', function(e) {
+                if ($(e.target).hasClass('lightbox')) {
+                    $('.lightbox').removeClass('active');
+                    $('body').css('overflow', 'auto');
+                }
+            });
+
+            // Rover info
+            const roverSelect = $('#rover');
+            const roverInfo = $('#rover-info .info-content');
+
+            roverSelect.on('change', function() {
+                const selectedRover = $(this).val();
+
+                switch (selectedRover) {
+                    case 'curiosity':
+                        roverInfo.html(`
+                            <h4><i class="fas fa-robot"></i> Rover Curiosity</h4>
+                            <p><strong>Fechas disponibles:</strong> 06/08/2012 - presente</p>
+                            <p><strong>Estado:</strong> <span class="status-active">ACTIVO</span></p>
+                            <p>El rover Curiosity de la NASA fue diseñado originalmente para una misión de dos años en Marte, pero ha superado con creces esa expectativa. Desde su aterrizaje en agosto de 2012, el rover ha estado operando en la superficie de Marte durante más de 10 años y todavía está en pleno funcionamiento.</p>
+                            <p>En la actualidad, no hay una fecha límite para el fin de su misión, ya que la NASA sigue operando el rover y planificando sus actividades para aprovechar al máximo su tiempo en el planeta rojo.</p>
+                        `);
+                        break;
+                    case 'opportunity':
+                        roverInfo.html(`
+                            <h4><i class="fas fa-robot"></i> Rover Opportunity</h4>
+                            <p><strong>Fechas disponibles:</strong> 26/01/2004 - 11/06/2018</p>
+                            <p><strong>Estado:</strong> <span class="status-inactive">INACTIVO</span></p>
+                            <p>El rover Opportunity fue lanzado al espacio el 7 de julio de 2003 y aterrizó en Marte el 25 de enero de 2004. La misión principal de Opportunity estaba programada para durar 90 días marcianos, pero la misión se extendió varias veces debido a su longevidad.</p>
+                            <p>La misión duró hasta que se perdió contacto con el rover el 10 de junio de 2018, después de una gran tormenta de polvo que cubrió gran parte del planeta. Opportunity estableció el récord de la mayor distancia recorrida por cualquier vehículo de ruedas en otro planeta.</p>
+                        `);
+                        break;
+                    case 'spirit':
+                        roverInfo.html(`
+                            <h4><i class="fas fa-robot"></i> Rover Spirit</h4>
+                            <p><strong>Fechas disponibles:</strong> 05/01/2004 - 21/03/2010</p>
+                            <p><strong>Estado:</strong> <span class="status-inactive">INACTIVO</span></p>
+                            <p>El rover Spirit fue lanzado al espacio el 10 de junio de 2003 y aterrizó en Marte el 4 de enero de 2004. La misión principal de Spirit duró 90 días marcianos (sol), que equivale a aproximadamente 92 días terrestres.</p>
+                            <p>La misión fue extendida varias veces y Spirit continuó operando hasta que se perdió contacto con él el 22 de marzo de 2010. Durante su misión, Spirit descubrió evidencia de que Marte tuvo condiciones más húmedas en el pasado de lo que se pensaba anteriormente.</p>
+                        `);
+                        break;
+                    default:
+                        roverInfo.html(`
+                            <h4><i class="fas fa-info-circle"></i> Información del Rover</h4>
+                            <p>Selecciona un rover para ver sus detalles y fechas disponibles</p>
+                        `);
+                        break;
+                }
+            });
+
+            // Set max date to today
+            const today = new Date().toISOString().split('T')[0];
+            $('#date').attr('max', today);
+        });
+    </script>
+}
+

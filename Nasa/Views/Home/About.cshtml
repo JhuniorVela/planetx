@@ -1,0 +1,193 @@
+﻿@{
+    ViewData["Title"] = "About";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .project-description {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .project-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: rgba(26, 26, 46, 0.5);
+        border-radius: 15px;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: fade-in-up 0.8s ease-out;
+    }
+
+    .project-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #64ffda 0%, #00bcd4 50%, #2196f3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+        font-family: 'Audiowide', sans-serif;
+    }
+
+    .project-card {
+        padding: 40px;
+        border-radius: 20px;
+        margin-top: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .project-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 4rem;
+        opacity: 0.1;
+        color: #64ffda;
+    }
+
+    .project-content {
+        position: relative;
+        z-index: 2;
+    }
+
+        .project-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 25px;
+        }
+
+    .highlight {
+        background: rgba(100, 255, 218, 0.1);
+        border-left: 3px solid #64ffda;
+        padding: 15px 20px;
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        margin: 30px 0;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+    }
+
+    .feature {
+        text-align: center;
+        padding: 25px;
+        background: rgba(26, 26, 46, 0.5);
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(100, 255, 218, 0.1);
+    }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(100, 255, 218, 0.1);
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: #64ffda;
+            margin-bottom: 15px;
+        }
+
+        .feature h4 {
+            color: #64ffda;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .feature p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+    .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 30px;
+        justify-content: center;
+    }
+
+    .tech-item {
+        background: rgba(100, 255, 218, 0.1);
+        color: #64ffda;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        border: 1px solid rgba(100, 255, 218, 0.2);
+    }
+
+    @@media (max-width: 768px) {
+        .project-card
+
+        {
+            padding: 25px;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+</style>
+
+<div class="project-description">
+    <div class="project-header">
+        <h1><i class="fas fa-robot"></i> Acerca de PLANETX</h1>
+    </div>
+
+    <div class="project-card glass-effect">
+        <div class="project-icon">
+            <i class="fas fa-rocket"></i>
+        </div>
+        <div class="project-content">
+            <p><strong>PLANETX</strong> es un proyecto desarrollado como práctica de integración de APIs que combina datos astronómicos y meteorológicos para crear una experiencia única de exploración espacial y terrestre.</p>
+
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-satellite"></i>
+                    <h4>NASA API Integration</h4>
+                    <p>Acceso a imágenes astronómicas del día y fotos de rovers en Marte</p>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-cloud-sun"></i>
+                    <h4>OpenWeatherMap API</h4>
+                    <p>Datos meteorológicos en tiempo real de cualquier ubicación</p>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-code"></i>
+                    <h4>Tecnologías .NET 6</h4>
+                    <p>ASP.NET Core MVC, Entity Framework, y arquitectura moderna</p>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>Diseño Responsive</h4>
+                    <p>Experiencia óptima en todos los dispositivos</p>
+                </div>
+            </div>
+
+            <p class="highlight">Este proyecto representa mi viaje de aprendizaje en el desarrollo fullstack, combinando mi interés por la astronomía con soluciones tecnológicas innovadoras.</p>
+
+            <div class="tech-stack">
+                <span class="tech-item">.NET 6</span>
+                <span class="tech-item">C#</span>
+                <span class="tech-item">ASP.NET Core</span>
+                <span class="tech-item">JavaScript</span>
+                <span class="tech-item">Bootstrap 5</span>
+                <span class="tech-item">NASA API</span>
+                <span class="tech-item">OpenWeather API</span>
+            </div>
+        </div>
+    </div>
+</div>

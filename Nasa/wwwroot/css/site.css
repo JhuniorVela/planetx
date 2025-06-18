@@ -1,0 +1,388 @@
+/*
+   ESTILOS GLOBALES PARA LAYOUT - site.css
+
+*/
+
+/* Variables CSS globales */
+:root {
+    --primary-gradient: linear-gradient(135deg, #64ffda 0%, #00bcd4 50%, #2196f3 100%);
+    --bg-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --shadow-glow: rgba(100, 255, 218, 0.3);
+    --navbar-bg: rgba(26, 26, 46, 0.95);
+}
+
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    background: var(--bg-gradient) !important;
+    min-height: 100vh;
+    color: var(--text-primary) !important;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/*
+   ANIMACIONES KEYFRAMES GLOBALES
+*/
+@-webkit-keyframes float-particles {
+    0%, 100% {
+        -webkit-transform: translateY(0px) rotate(0deg);
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+    }
+
+    50% {
+        -webkit-transform: translateY(-20px) rotate(180deg);
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+@keyframes float-particles {
+    0%, 100% {
+        -webkit-transform: translateY(0px) rotate(0deg);
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+    }
+
+    50% {
+        -webkit-transform: translateY(-20px) rotate(180deg);
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes title-glow {
+    0% {
+        -webkit-filter: drop-shadow(0 0 10px var(--shadow-glow));
+        filter: drop-shadow(0 0 10px var(--shadow-glow));
+    }
+
+    100% {
+        -webkit-filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.5));
+        filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.5));
+    }
+}
+
+@keyframes title-glow {
+    0% {
+        -webkit-filter: drop-shadow(0 0 10px var(--shadow-glow));
+        filter: drop-shadow(0 0 10px var(--shadow-glow));
+    }
+
+    100% {
+        -webkit-filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.5));
+        filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.5));
+    }
+}
+
+@-webkit-keyframes fade-in-up {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in-up {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+/*
+   NAVBAR PERSONALIZADA
+*/
+.navbar {
+    background: var(--navbar-bg) !important;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-family: 'Audiowide', cursive !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    color: var(--text-primary) !important;
+    text-shadow: 0 0 10px var(--shadow-glow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-brand:hover {
+    color: #64ffda !important;
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.navbar-brand img {
+    -webkit-filter: drop-shadow(0 0 10px var(--shadow-glow));
+    filter: drop-shadow(0 0 10px var(--shadow-glow));
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500 !important;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    margin: 0 5px;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #64ffda !important;
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    background: var(--primary-gradient);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/*
+   CONTAINER Y MAIN CONTENT
+*/
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+main {
+    min-height: calc(100vh - 200px);
+    padding-top: 2rem !important;
+
+}
+
+/*
+   FOOTER PERSONALIZADO
+*/
+.footer {
+    background: var(--navbar-bg) !important;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--glass-border) !important;
+    color: var(--text-secondary) !important;
+    padding: 1.5rem 0;
+    margin-top: auto;
+}
+
+.footer a {
+    color: #64ffda !important;
+    text-decoration: none;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.footer a:hover {
+    color: #00bcd4 !important;
+    text-shadow: 0 0 10px var(--shadow-glow);
+}
+
+/* Estilos adicionales para los iconos */
+.social-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.social-links a {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #64ffda !important;
+    transform: translateY(-3px);
+}
+
+/*
+   PARTÍCULAS DE FONDO GLOBALES
+*/
+.particles-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle-item {
+    position: absolute;
+    background: var(--glass-border);
+    border-radius: 50%;
+    -webkit-animation: float-particles 6s ease-in-out infinite;
+    animation: float-particles 6s ease-in-out infinite;
+}
+
+/*
+   UTILIDADES GLOBALES
+ */
+.text-glow {
+    text-shadow: 0 0 20px var(--shadow-glow);
+}
+
+.glass-effect {
+    background: var(--glass-bg) !important;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 15px;
+}
+
+.gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.animate-fade-in {
+    -webkit-animation: fade-in-up 0.6s ease-out forwards;
+    animation: fade-in-up 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-glow {
+    -webkit-animation: title-glow 2s ease-in-out infinite alternate;
+    animation: title-glow 2s ease-in-out infinite alternate;
+}
+
+/*
+   RESPONSIVE DESIGN
+*/
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.3rem !important;
+    }
+
+    .navbar-brand img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .nav-link {
+        text-align: center;
+        padding: 0.75rem 1rem !important;
+    }
+
+    main {
+        padding-top: 1rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.1rem !important;
+    }
+
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/* =============================================
+   MEJORAS PARA COMPATIBILIDAD
+   ============================================= */
+.navbar-toggler {
+    border-color: var(--glass-border) !important;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.navbar-collapse {
+    background: var(--navbar-bg);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    border: 1px solid var(--glass-border);
+}
+
+/* =============================================
+   ESTILOS PARA PÁGINAS ESPECÍFICAS
+   ============================================= */
+.page-home .particles-bg {
+    display: block;
+}
+
+.page-content .particles-bg {
+    display: none;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-gradient);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #00bcd4, #2196f3);
+}

@@ -1,0 +1,305 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="particles-bg" id="particles-container"></div>
+
+<style>
+    /*Estilos específicos para Home*/
+    .home-header {
+        position: relative;
+        z-index: 2;
+        background: var(--glass-bg);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--glass-border);
+        border-radius: 20px;
+        margin-bottom: 3rem;
+        padding: 3rem 2rem;
+    }
+
+    .home-title {
+        font-family: 'Audiowide', cursive !important;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 700 !important;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px var(--shadow-glow);
+        margin-bottom: 1rem;
+    }
+
+    .home-subtitle {
+        color: var(--text-secondary);
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        font-size: 1.2rem;
+    }
+
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .feature-card {
+        background: var(--glass-bg);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        -webkit-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 300px;
+        padding: 2.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.3;
+        -webkit-transition: opacity 0.4s ease;
+        transition: opacity 0.4s ease;
+        z-index: -1;
+    }
+
+    .feature-card:hover {
+        -webkit-transform: translateY(-10px) scale(1.02);
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(100, 255, 218, 0.5);
+        border-color: rgba(100, 255, 218, 0.5);
+    }
+
+    .feature-card:hover::before {
+        opacity: 0.6;
+    }
+
+    /* Backgrounds específicos */
+    .card-apod::before {
+        background-image: url('https://images.pexels.com/photos/11657171/pexels-photo-11657171.jpeg');
+    }
+
+    .card-rovers::before {
+        background-image: url('https://images.pexels.com/photos/32083788/pexels-photo-32083788.jpeg');
+    }
+
+    .card-weather::before {
+        background-image: url('https://images.pexels.com/photos/3657143/pexels-photo-3657143.jpeg?auto=compress&cs=tinysrgb&w=600');
+    }
+
+    /* Efectos hover específicos */
+    .card-apod:hover {
+        background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(72, 61, 139, 0.2));
+    }
+
+    .card-rovers:hover {
+        background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(220, 20, 60, 0.2));
+    }
+
+    .card-weather:hover {
+        background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(0, 191, 255, 0.2));
+    }
+
+    .card-icon {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+        font-family: 'Audiowide', cursive;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+        color: var(--text-primary);
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-description {
+        color: var(--text-secondary);
+        font-weight: 300;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+
+    .card-link {
+        color: inherit;
+        text-decoration: none;
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+
+    .card-link:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /* Animaciones de entrada */
+    .animate-card {
+        -webkit-animation: fade-in-up 0.6s ease-out forwards;
+        animation: fade-in-up 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .animate-card:nth-child(1) {
+        -webkit-animation-delay: 0.1s;
+        animation-delay: 0.1s;
+    }
+
+    .animate-card:nth-child(2) {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s;
+    }
+
+    .animate-card:nth-child(3) {
+        -webkit-animation-delay: 0.3s;
+        animation-delay: 0.3s;
+    }
+
+    @@media (max-width: 768px) {
+        .cards-container
+        {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            min-height: 250px;
+            padding: 2rem;
+        }
+
+        .home-header {
+            padding: 2rem 1rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .home-title
+        {
+            font-size: 2rem;
+        }
+
+        .home-subtitle {
+            font-size: 1rem;
+        }
+    }
+
+    
+</style>
+
+<!-- Header Section -->
+<div class="home-header animate-fade-in">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="home-title animate-glow">Bienvenido</h1>
+            <p class="home-subtitle">Explora el cosmos y el clima con tecnología avanzada</p>
+        </div>
+    </div>
+</div>
+
+<!-- Cards Section -->
+<div class="cards-container">
+    <!-- APOD Card -->
+    <article class="feature-card card-apod animate-card">
+        <a class="card-link" asp-area="" asp-controller="Nasa" asp-action="Apod">
+            <span class="card-icon">🌌</span>
+            <h2 class="card-title">APOD</h2>
+            <p class="card-description">Descubre la imagen astronómica del día y sumérgete en las maravillas del universo</p>
+        </a>
+    </article>
+
+    <!-- Rovers Card -->
+    <article class="feature-card card-rovers animate-card">
+        <a class="card-link" asp-area="" asp-controller="Nasa" asp-action="Rover">
+            <span class="card-icon">🚀</span>
+            <h2 class="card-title">ROVERS</h2>
+            <p class="card-description">Explora Marte a través de las increíbles imágenes capturadas por los rovers de la NASA</p>
+        </a>
+    </article>
+
+    <!-- Weather Card -->
+    <article class="feature-card card-weather animate-card">
+        <a class="card-link" asp-area="" asp-controller="Weather" asp-action="Clima">
+            <span class="card-icon">🌍</span>
+            <h2 class="card-title">CLIMA</h2>
+            <p class="card-description">Consulta las condiciones meteorológicas en tiempo real de ciudades alrededor del mundo</p>
+        </a>
+    </article>
+</div>
+
+@section Scripts {
+    <script>
+        // Función para crear partículas animadas
+        function createAnimatedParticles() {
+            const container = document.getElementById('particles-container');
+            if (!container) return;
+
+            const particleCount = 50;
+            container.innerHTML = '';
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle-item';
+
+                const size = Math.random() * 4 + 2;
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const delay = Math.random() * 6;
+
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.animationDelay = delay + 's';
+
+                container.appendChild(particle);
+            }
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            createAnimatedParticles();
+
+            // Agregar clase para identificar que estamos en Home
+            document.body.classList.add('page-home');
+        });
+
+        // Recrear partículas al redimensionar
+        window.addEventListener('resize', function() {
+            createAnimatedParticles();
+        });
+
+        // Mejorar experiencia táctil en móviles
+        document.querySelectorAll('.feature-card').forEach(function(card) {
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'translateY(-5px) scale(1.01)';
+            });
+
+            card.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+}

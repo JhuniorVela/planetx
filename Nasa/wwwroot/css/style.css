@@ -1,0 +1,110 @@
+﻿.container-table {
+    display: flex;
+}
+
+table {
+    float: left;
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: white;
+}
+
+h3, h5, p {
+    font-family: "Audiowide", sans-serif;
+    display: inline-block;
+    color: white;
+}
+
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+
+td img {
+    max-width: 100%;
+    height: auto;
+}
+
+td video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white;
+}
+
+input[type="date"] {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    button[type="submit"]:hover {
+        background-color: #666;
+    }
+
+.image-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+    .image-container img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+    }
+
+.ImagenDia {
+    float: right;
+    margin-top: 20px;
+    margin-left: 100px;
+    width: 40%;
+}
+
+    .ImagenDia img {
+        max-width: 100%;
+        border-radius: 5px;
+    }
+
+.container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
