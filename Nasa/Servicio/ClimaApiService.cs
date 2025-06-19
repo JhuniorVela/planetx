@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Nasa.configuracion;
 using Nasa.Models;
 using Newtonsoft.Json;
 
@@ -7,27 +9,36 @@ namespace Nasa.Servicio
     public class ClimaApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly WeatherApiSettings _weatherApiSettings;
 
-        public ClimaApiService(HttpClient httpClient)
+        public ClimaApiService(HttpClient httpClient, WeatherApiSettings weatherApiSettings)
         {
             _httpClient = httpClient;
+            _weatherApiSettings = weatherApiSettings;
         }
 
         public async Task<WeatherData> ObtenerClima(string city)
         {
-            var apiKey = "287228a7ef7180ee3d359819dd68fe33";
-            var url = $"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units=metric";
-
-            var response = await _httpClient.GetAsync(url);
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                return null;
+                var url = $"{_weatherApiSettings.Endpoint}?q={city}&appid={_weatherApiSettings.ApiKey}&units=metric";
+
+                var response = await _httpClient.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<WeatherData>(json);
+
+                return data;
             }
-
-            var json = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<WeatherData>(json);
-
-            return data;
+            catch (HttpRequestException ex)
+            {
+                // Log the exception
+                throw new Exception($"Error al obtener datos del clima: {ex.Message}", ex);
+            }
         }
     }
 }
